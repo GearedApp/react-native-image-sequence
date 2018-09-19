@@ -1,9 +1,5 @@
 import React, { Component } from 'react';
-import {
-  View,
-  requireNativeComponent,
-  ViewPropTypes
-} from 'react-native';
+import { View, requireNativeComponent, ViewPropTypes } from 'react-native';
 import { bool, string, number, array, shape, arrayOf } from 'prop-types';
 import resolveAssetSource from 'react-native/Libraries/Image/resolveAssetSource';
 
@@ -13,39 +9,43 @@ class ImageSequence extends Component {
 
     // reorder elements if start-index is different from 0 (beginning)
     if (this.props.startFrameIndex !== 0) {
-      normalized = [...normalized.slice(this.props.startFrameIndex), ...normalized.slice(0, this.props.startFrameIndex)];
+      normalized = [
+        ...normalized.slice(this.props.startFrameIndex),
+        ...normalized.slice(0, this.props.startFrameIndex)
+      ];
     }
 
-    return (
-      <RCTImageSequence
-        {...this.props}
-        images={normalized} />
-    );
+    return <RCTImageSequence {...this.props} images={normalized} />;
   }
 }
 
 ImageSequence.defaultProps = {
   startFrameIndex: 0,
   framesPerSecond: 24,
-  loop: true
+  loop: true,
+  isStopped: true
 };
 
 ImageSequence.propTypes = {
   startFrameIndex: number,
   images: array.isRequired,
   framesPerSecond: number,
-  loop: bool
+  loop: bool,
+  isStopped: bool
 };
 
 const RCTImageSequence = requireNativeComponent('RCTImageSequence', {
   propTypes: {
     ...ViewPropTypes,
-    images: arrayOf(shape({
-      uri: string.isRequired
-    })).isRequired,
+    images: arrayOf(
+      shape({
+        uri: string.isRequired
+      })
+    ).isRequired,
     framesPerSecond: number,
-    loop: bool
-  },
+    loop: bool,
+    isStopped: bool
+  }
 });
 
 export default ImageSequence;

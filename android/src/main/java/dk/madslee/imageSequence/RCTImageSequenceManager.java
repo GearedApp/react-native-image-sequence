@@ -56,4 +56,15 @@ public class RCTImageSequenceManager extends SimpleViewManager<RCTImageSequenceV
     public void setLoop(final RCTImageSequenceView view, Boolean loop) {
         view.setLoop(loop);
     }
+
+    /**
+     * sets if animations is stopped.
+     *
+     * @param view
+     * @param isStopped
+     */
+    @ReactProp(name = "isStopped")
+    public void setIsStopped(final RCTImageSequenceView view, Boolean isStopped) {
+        view.setIsStopped(isStopped);
+    }
 }

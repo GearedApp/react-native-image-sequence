@@ -20,6 +20,7 @@ import java.util.concurrent.RejectedExecutionException;
 public class RCTImageSequenceView extends ImageView {
     private Integer framesPerSecond = 24;
     private Boolean loop = true;
+    private Boolean isStopped = true;
     private ArrayList<AsyncTask> activeTasks;
     private HashMap<Integer, Bitmap> bitmaps;
     private RCTResourceDrawableIdHelper resourceDrawableIdHelper;
@@ -132,6 +133,15 @@ public class RCTImageSequenceView extends ImageView {
         }
     }
 
+    public void setIsStopped(Boolean isStopped) {
+        this.isStopped = isStopped;
+
+        // updating looping, results in building a new AnimationDrawable
+        if (isLoaded()) {
+            setupAnimationDrawable();
+        }
+    }
+
     private boolean isLoaded() {
         return !isLoading() && bitmaps != null && !bitmaps.isEmpty();
     }
@@ -150,6 +160,9 @@ public class RCTImageSequenceView extends ImageView {
         animationDrawable.setOneShot(!this.loop);
 
         this.setImageDrawable(animationDrawable);
-        animationDrawable.start();
+
+        if (!this.isStopped) {
+            animationDrawable.start();
+        }
     }
 }
